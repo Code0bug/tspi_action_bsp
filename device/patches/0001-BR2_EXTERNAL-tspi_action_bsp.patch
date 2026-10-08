@@ -1,0 +1,45 @@
+From 20933d4e86722f0770643d29c3aa6691d52f590d Mon Sep 17 00:00:00 2001
+From: lzp1733149755 <1733149755@qq.com>
+Date: Thu, 8 Oct 2026 21:48:12 +0800
+Subject: [PATCH] =?UTF-8?q?=E6=8E=A5=E5=85=A5=20BR2=5FEXTERNAL=20=E4=BE=9B?=
+ =?UTF-8?q?=20tspi=5Faction=5Fbsp=20=E4=BD=BF=E7=94=A8?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ common/mk-buildroot.sh                | 3 ++-
+ rk356x/BoardConfig-rk3566-tspi-v10.mk | 2 ++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/common/mk-buildroot.sh b/common/mk-buildroot.sh
+index 73fe1ef..6f21b56 100755
+--- a/common/mk-buildroot.sh
++++ b/common/mk-buildroot.sh
+@@ -16,8 +16,9 @@ then
+         echo "RK_CFG_BUILDROOT is empty, skip building buildroot rootfs!"
+         exit 0
+ fi
++export BR2_EXTERNAL=${BR2_EXTERNAL:-$TOP_DIR/tspi_action_bsp/buildroot/external}
+ source $TOP_DIR/buildroot/build/envsetup.sh $RK_CFG_BUILDROOT
+-$TOP_DIR/buildroot/utils/brmake
++$TOP_DIR/buildroot/utils/brmake BR2_EXTERNAL="$BR2_EXTERNAL"
+ if [ $? -ne 0 ]; then
+     echo "log saved on $TOP_DIR/br.log"
+     tail -n 100 $TOP_DIR/br.log
+diff --git a/rk356x/BoardConfig-rk3566-tspi-v10.mk b/rk356x/BoardConfig-rk3566-tspi-v10.mk
+index d2472bf..5d26006 100755
+--- a/rk356x/BoardConfig-rk3566-tspi-v10.mk
++++ b/rk356x/BoardConfig-rk3566-tspi-v10.mk
+@@ -22,6 +22,8 @@ export RK_KERNEL_FIT_ITS=boot.its
+ export RK_PARAMETER=parameter-buildroot-fit.txt
+ # Buildroot config
+ export RK_CFG_BUILDROOT=rockchip_rk3566
++# BR2_EXTERNAL: tspi_action_bsp overlay + packages
++export BR2_EXTERNAL=$TOP_DIR/tspi_action_bsp/buildroot/external
+ # Recovery config
+ export RK_CFG_RECOVERY=rockchip_rk356x_recovery
+ # Recovery image format type: fit(flattened image tree)
+-- 
+2.25.1
+
