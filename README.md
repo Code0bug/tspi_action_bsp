@@ -76,13 +76,46 @@ cd /home/lzp/linux_sdk
 说明：
 
 - 包定义见 `buildroot/external/package/tspi_action_source/`。
-- 仅改应用源码后可在 buildroot 输出目录重建该包，例如：  
-  `make -C buildroot/output/rockchip_rk3566 tspi_action_source-rebuild`
+- `TSPI_ACTION_SOURCE_VERSION` 可为分支名、tag 或 commit hash；改版本后建议清缓存再编。
 - rootfs overlay 顺序：原厂 common/rk356x/wifi，再叠本仓库 `board/tspi/fs-overlay`。
   
   成功时日志应有：  
   `Copying overlay .../tspi_action_bsp/buildroot/external/board/tspi/fs-overlay`
 - 烧录：按立创泰山派方式分别下载 `boot.img` 与 `rootfs.ext4`（见 `tspi_action_source` 的 CLAUDE.md）。
+- `/userdata` 为独立分区；只烧 `rootfs.ext4` 一般不会覆盖其中的照片/录像等数据。
+
+### 清除 tspi_action_source 旧构建
+
+在 SDK 根目录执行：
+
+```bash
+cd /home/lzp/linux_sdk
+rm -f buildroot/dl/tspi_action_source-*.tar.gz
+rm -rf buildroot/output/rockchip_rk3566/build/tspi_action_source-*
+```
+
+### 单独重编应用包
+
+清完缓存后，或仅需重编并安装到 `target`：
+
+```bash
+cd /home/lzp/linux_sdk
+make -C buildroot/output/rockchip_rk3566 tspi_action_source-rebuild
+```
+
+二进制装到 `buildroot/output/rockchip_rk3566/target/root/ai-cam-ui-widget`。  
+若还要刷新可烧录镜像，再执行 `./build.sh rootfs`（或至少让 Buildroot 重新打 `rootfs.ext4`）。
+
+### 清除全部旧构建，完整重编
+
+会删掉当前输出目录下的 `target` / `images` / `host` / `build` 等，下次编 rootfs 相当于重新装包打包（工具链与各包也会重编，耗时很长）：
+
+```bash
+cd /home/lzp/linux_sdk/buildroot
+make O=output/rockchip_rk3566 clean
+cd /home/lzp/linux_sdk
+./build.sh rootfs
+```
 
 ## 导出补丁（维护时）
 
