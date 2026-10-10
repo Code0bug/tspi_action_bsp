@@ -15,10 +15,7 @@ TSPI_ACTION_SOURCE_DEPENDENCIES = \
 	ffmpeg \
 	rockchip-rga
 
-# .pro 里写死了本机 sysroot，编包时改成当前 STAGING_DIR
 define TSPI_ACTION_SOURCE_CONFIGURE_CMDS
-	$(SED) 's|/home/lzp/linux_sdk/buildroot/output/rockchip_rk3566/host/aarch64-buildroot-linux-gnu/sysroot|$(STAGING_DIR)|g' \
-		$(@D)/ai-cam-ui-widget.pro
 	cd $(@D); $(TARGET_MAKE_ENV) $(HOST_DIR)/bin/qmake ai-cam-ui-widget.pro
 endef
 

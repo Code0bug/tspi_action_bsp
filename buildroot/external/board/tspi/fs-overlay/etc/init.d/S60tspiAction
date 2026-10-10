@@ -2,6 +2,10 @@
 
 case "$1" in
     start)
+        if [ -f /etc/tspiAction_debug ] && grep -qx 'true' /etc/tspiAction_debug; then
+            echo "Debug mode, skip ai-cam-ui-widget"
+            exit 0
+        fi
         echo "Starting ai-cam-ui-widget..."
         export QT_QPA_PLATFORM=eglfs
         export QT_QPA_EGLFS_INTEGRATION=eglfs_kms
