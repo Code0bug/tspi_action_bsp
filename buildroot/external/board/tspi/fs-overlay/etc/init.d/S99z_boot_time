@@ -1,0 +1,19 @@
+#!/bin/sh
+# Print boot timing summary when debug mode is enabled.
+
+case "$1" in
+	start)
+		[ -r /etc/tspi/boot_timing.sh ] || exit 0
+		. /etc/tspi/boot_timing.sh
+		tspi_debug_enabled || exit 0
+		tspi_boot_print_summary
+		;;
+	stop)
+		;;
+	*)
+		echo "Usage: $0 {start|stop}"
+		exit 1
+		;;
+esac
+
+exit 0
