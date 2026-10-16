@@ -1,0 +1,34 @@
+From 53bd9af56935da1bd1980f0f2fc962872ede5a84 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?=E6=88=91=E7=9A=84=E4=BB=A3=E7=A0=81=E6=B2=A1=E9=97=AE?=
+ =?UTF-8?q?=E9=A2=98?= <1733149755@qq.com>
+Date: Fri, 16 Oct 2026 15:24:02 +0800
+Subject: [PATCH 2/2] =?UTF-8?q?=E5=B0=86=20oem=20=E4=B8=8E=20userdata=20?=
+ =?UTF-8?q?=E5=88=86=E5=8C=BA=E6=94=B9=E4=B8=BA=20ext4?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+ext2 无日志，异常断电后开机 fsck 会强制全盘扫描。
+---
+ rk356x/BoardConfig-rk3566-tspi-v10.mk | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/rk356x/BoardConfig-rk3566-tspi-v10.mk b/rk356x/BoardConfig-rk3566-tspi-v10.mk
+index 5d26006..72959a0 100755
+--- a/rk356x/BoardConfig-rk3566-tspi-v10.mk
++++ b/rk356x/BoardConfig-rk3566-tspi-v10.mk
+@@ -47,9 +47,9 @@ export RK_ROOTFS_IMG=rockdev/rootfs.${RK_ROOTFS_TYPE}
+ # Set ramboot image type
+ export RK_RAMBOOT_TYPE=
+ # Set oem partition type, including ext2 squashfs
+-export RK_OEM_FS_TYPE=ext2
++export RK_OEM_FS_TYPE=ext4
+ # Set userdata partition type, including ext2, fat
+-export RK_USERDATA_FS_TYPE=ext2
++export RK_USERDATA_FS_TYPE=ext4
+ #OEM config
+ export RK_OEM_DIR=oem_normal
+ # OEM build on buildroot
+-- 
+2.25.1
+
