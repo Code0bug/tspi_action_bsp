@@ -1,6 +1,10 @@
 #!/bin/sh
 # Boot timing helpers. Sourced by rcS / S99z_boot_time.
-# Active only when /etc/tspiAction_debug contains a single line: true
+# Config file /etc/tspiAction_debug:
+#   - a line that is exactly "true"  -> enable the timed rcS path
+#   - skip=NAME1 NAME2,...           -> init scripts skipped on the timed path
+#   - '#' comment lines and blank lines may appear anywhere
+# Only effective on the timed path.
 
 TSPI_BOOT_LOG=/run/boot_service_times.log
 TSPI_BOOT_PHASES=/run/boot_phases.env
@@ -8,6 +12,28 @@ TSPI_DEBUG_FLAG=/etc/tspiAction_debug
 
 tspi_debug_enabled() {
 	[ -f "$TSPI_DEBUG_FLAG" ] && grep -qx 'true' "$TSPI_DEBUG_FLAG"
+}
+
+# Skip list: all "skip=NAME..." lines in $TSPI_DEBUG_FLAG.
+# Comment lines (#) and blank lines are ignored anywhere in the file;
+# inline comments after values are stripped. Names are space/comma
+# separated; multiple skip= lines are merged.
+tspi_boot_skip_init() {
+	TSPI_SKIP_LIST=
+	[ -r "$TSPI_DEBUG_FLAG" ] || return 0
+	TSPI_SKIP_LIST=$(sed -n \
+		-e 's|#.*$||' \
+		-e 's|^[[:space:]]*skip[[:space:]]*=[[:space:]]*||p' \
+		"$TSPI_DEBUG_FLAG" \
+		| tr -s ' \t\n,' '    ')
+}
+
+tspi_should_skip() {
+	[ -n "$TSPI_SKIP_LIST" ] || return 1
+	case " $TSPI_SKIP_LIST " in
+		*" $1 "*) return 0 ;;
+	esac
+	return 1
 }
 
 tspi_boot_uptime() {
@@ -90,10 +116,16 @@ tspi_run_one_svc() {
 tspi_rcs_start_all() {
 	tspi_boot_log_init
 	tspi_boot_capture_phases
+	tspi_boot_skip_init
 	_boot0=$(tspi_boot_uptime)
 
 	for _i in /etc/init.d/S??*; do
 		[ ! -f "$_i" ] && continue
+		_name=${_i##*/}
+		if tspi_should_skip "$_name"; then
+			tspi_boot_log "$(printf "%-28s %6ss  (skipped)" "$_name" "0.00")"
+			continue
+		fi
 		tspi_run_one_svc "$_i"
 	done
 

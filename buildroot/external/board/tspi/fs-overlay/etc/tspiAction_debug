@@ -1,1 +1,9 @@
+# tspi 开机调试配置（由 boot_timing.sh 读取）
+#
+# 第一行内容为 true 时：表示debug模式开启，开启系统计时
+# 其他取值/没有该行：走默认 rcS 启动
+#
+# skip= 后写不在计时路径启动的服务名（空格或逗号分隔）：
+#   skip=S49ntp S50sshd
 true
+skip=S60tspiAction S49ntp
