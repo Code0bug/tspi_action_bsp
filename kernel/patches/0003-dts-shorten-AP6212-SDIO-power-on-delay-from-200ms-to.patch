@@ -1,0 +1,26 @@
+From d04c57eff287e421c97396178db90dfe93fec6db Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?=E6=88=91=E7=9A=84=E4=BB=A3=E7=A0=81=E6=B2=A1=E9=97=AE?=
+ =?UTF-8?q?=E9=A2=98?= <1733149755@qq.com>
+Date: Sat, 17 Oct 2026 20:03:46 +0800
+Subject: [PATCH] dts: shorten AP6212 SDIO power-on delay from 200ms to 50ms
+
+---
+ arch/arm64/boot/dts/rockchip/tspi-rk3566-core-v10.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/rockchip/tspi-rk3566-core-v10.dtsi b/arch/arm64/boot/dts/rockchip/tspi-rk3566-core-v10.dtsi
+index 6c9afefd9002..9c7ac3e50d85 100755
+--- a/arch/arm64/boot/dts/rockchip/tspi-rk3566-core-v10.dtsi
++++ b/arch/arm64/boot/dts/rockchip/tspi-rk3566-core-v10.dtsi
+@@ -214,7 +214,7 @@
+ 		 * - SDIO_RESET_L_WL_REG_ON
+ 		 * - PDN (power down when low)
+ 		 */
+-		post-power-on-delay-ms = <200>;
++		post-power-on-delay-ms = <50>;
+ 		reset-gpios = <&gpio2 RK_PB1 GPIO_ACTIVE_LOW>;
+ 	};
+ 
+-- 
+2.25.1
+

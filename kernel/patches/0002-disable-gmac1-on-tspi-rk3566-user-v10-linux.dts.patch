@@ -1,0 +1,26 @@
+From dfd2828b536dfe8d38e4563f52eb471f7fa5acc4 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?=E6=88=91=E7=9A=84=E4=BB=A3=E7=A0=81=E6=B2=A1=E9=97=AE?=
+ =?UTF-8?q?=E9=A2=98?= <1733149755@qq.com>
+Date: Sat, 17 Oct 2026 19:46:23 +0800
+Subject: [PATCH] disable gmac1 on tspi-rk3566-user-v10-linux.dts
+
+---
+ arch/arm64/boot/dts/rockchip/tspi-rk3566-user-v10-linux.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/rockchip/tspi-rk3566-user-v10-linux.dts b/arch/arm64/boot/dts/rockchip/tspi-rk3566-user-v10-linux.dts
+index 7451767631d8..4db08bd5156f 100644
+--- a/arch/arm64/boot/dts/rockchip/tspi-rk3566-user-v10-linux.dts
++++ b/arch/arm64/boot/dts/rockchip/tspi-rk3566-user-v10-linux.dts
+@@ -47,7 +47,7 @@
+ 
+ 
+ //【开/关】网口 扩展板上使用的是千兆网，不接扩展板情况下可以关闭
+-#include "tspi-rk3566-gmac1-v10.dtsi"
++// #include "tspi-rk3566-gmac1-v10.dtsi"
+ 
+ //【开/关】下方是用户定义层，所有用户修改理论上在此下方修改就好了
+ / {
+-- 
+2.25.1
+
