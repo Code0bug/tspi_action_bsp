@@ -6,4 +6,4 @@
 # skip= 后写不在计时路径启动的服务名（空格或逗号分隔）：
 #   skip=S49ntp S50sshd
 true
-skip=S60tspiAction S49ntp S50dropbear
+skip=S60tspiAction S49ntp S50dropbear S50sshd
