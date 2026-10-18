@@ -64,13 +64,17 @@ cd /home/lzp/linux_sdk
 # 若尚未选板，选 rk3566-tspi-v10 对应 BoardConfig
 ./build.sh lunch
 
+# 内核
+./build.sh kernel
+# 产物：rockdev/boot.img
+
 # 根文件系统（含 tspi_action_source 包；需能访问 Gitee）
 ./build.sh rootfs
 # 产物：rockdev/rootfs.ext4
 
-# 内核（单独烧录，不打包完整 update.img）
-./build.sh kernel
-# 产物：rockdev/boot.img
+# 打包分区镜像（oem / userdata 等）
+./build.sh firmware
+# 产物：rockdev/oem.img、rockdev/userdata.img，并把 boot/rootfs 等链到 rockdev/
 ```
 
 说明：
@@ -81,8 +85,9 @@ cd /home/lzp/linux_sdk
   
   成功时日志应有：  
   `Copying overlay .../tspi_action_bsp/buildroot/external/board/tspi/fs-overlay`
-- 烧录：按立创泰山派方式分别下载 `boot.img` 与 `rootfs.ext4`（见 `tspi_action_source` 的 CLAUDE.md）。
-- `/userdata` 为独立分区；只烧 `rootfs.ext4` 一般不会覆盖其中的照片/录像等数据。
+- 烧录：按立创泰山派方式分别下载  
+  `boot.img`、`rootfs.ext4`（或 `rootfs.img`）、`oem.img`、`userdata.img`。
+- 烧 `userdata.img` 会覆盖板上 `/userdata`（照片/录像等）；日常只更新系统时可以不烧这一项。
 
 ### 清除 tspi_action_source 旧构建
 
