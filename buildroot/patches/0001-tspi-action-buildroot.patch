@@ -1,4 +1,4 @@
-From 721138fdad5c168a0e4b018c89a06e4a6474c4d1 Mon Sep 17 00:00:00 2001
+From da9a1ed2e9a875546e8cfba2df0f6c7217f043e3 Mon Sep 17 00:00:00 2001
 From: lzp1733149755 <1733149755@qq.com>
 Date: Sat, 12 Sep 2026 23:39:32 +0800
 Subject: [PATCH] =?UTF-8?q?=E6=B7=BB=E5=8A=A0tspi-action=E6=89=80=E9=9C=80?=
@@ -8,14 +8,14 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 ---
- configs/rockchip_rk3566_defconfig | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ configs/rockchip_rk3566_defconfig | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
 diff --git a/configs/rockchip_rk3566_defconfig b/configs/rockchip_rk3566_defconfig
-index 22ea8cc1..17c69ee9 100755
+index 22ea8cc1..c4cf3492 100755
 --- a/configs/rockchip_rk3566_defconfig
 +++ b/configs/rockchip_rk3566_defconfig
-@@ -22,3 +22,28 @@
+@@ -22,3 +22,29 @@
  BR2_PACKAGE_RKWIFIBT_AP6212A1=y
  BR2_PACKAGE_RKWIFIBT_BTUART="ttyS1"
  BR2_PACKAGE_RKNPU2=y
@@ -42,6 +42,7 @@ index 22ea8cc1..17c69ee9 100755
 +BR2_PACKAGE_OPENCV4_WITH_JPEG=y
 +BR2_PACKAGE_OPENCV4_WITH_PNG=y
 +BR2_PACKAGE_OPENSSH=y
++BR2_PACKAGE_ROCKIT=y
 +BR2_PACKAGE_TSPI_ACTION_SOURCE=y
 +BR2_ROOTFS_OVERLAY="$(BR2_EXTERNAL_TSPI_ACTION_PATH)/board/tspi/fs-overlay"
 -- 
