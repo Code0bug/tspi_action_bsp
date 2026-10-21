@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TSPI_ACTION_SOURCE_VERSION = edd10610cb9ef7f7bcaf06b00b0311e8aed80485
+TSPI_ACTION_SOURCE_VERSION = 191d55a616cc1e17bc76dd2ac8fae5c26a2a6441
 TSPI_ACTION_SOURCE_SITE = git@gitee.com:lzp1733149755/tspi_action_source.git
 TSPI_ACTION_SOURCE_SITE_METHOD = git
 TSPI_ACTION_SOURCE_LICENSE = Proprietary
