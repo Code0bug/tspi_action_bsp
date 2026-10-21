@@ -1,6 +1,6 @@
 #!/bin/bash
-# Ensure kernel / device/rockchip / buildroot are at VERSION baselines,
-# then replay BSP patches. Resets the three repos if they are not on baseline.
+# Ensure kernel / device/rockchip / buildroot / external/rockit are at VERSION
+# baselines, then replay BSP patches. Resets these repos if they are not on baseline.
 set -euo pipefail
 
 BSP_DIR=$(cd "$(dirname "$0")/.." && pwd)
@@ -29,6 +29,7 @@ version_get() {
 kernel_base=$(version_get kernel_base)
 device_base=$(version_get device_base)
 buildroot_base=$(version_get buildroot_base)
+rockit_base=$(version_get rockit_base)
 
 ensure_baseline() {
 	local repo=$1
@@ -84,17 +85,19 @@ apply_series() {
 
 echo "BSP: $BSP_DIR"
 echo "SDK: $SDK_DIR"
-echo "baselines: kernel=$kernel_base device=$device_base buildroot=$buildroot_base"
+echo "baselines: kernel=$kernel_base device=$device_base buildroot=$buildroot_base rockit=$rockit_base"
 echo
 
 ensure_baseline "$SDK_DIR/kernel" "$kernel_base"
 ensure_baseline "$SDK_DIR/device/rockchip" "$device_base"
 ensure_baseline "$SDK_DIR/buildroot" "$buildroot_base"
+ensure_baseline "$SDK_DIR/external/rockit" "$rockit_base"
 echo
 
 apply_series "$SDK_DIR/kernel" "$BSP_DIR/kernel/patches"
 apply_series "$SDK_DIR/device/rockchip" "$BSP_DIR/device/patches"
 apply_series "$SDK_DIR/buildroot" "$BSP_DIR/buildroot/patches"
+apply_series "$SDK_DIR/external/rockit" "$BSP_DIR/rockit/patches"
 
 echo
 echo "done."

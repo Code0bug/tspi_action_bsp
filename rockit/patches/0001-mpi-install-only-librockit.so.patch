@@ -1,0 +1,35 @@
+From 0af313d77356d29fd469212f58dbd56af4538ba8 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?=E6=88=91=E7=9A=84=E4=BB=A3=E7=A0=81=E6=B2=A1=E9=97=AE?=
+ =?UTF-8?q?=E9=A2=98?= <1733149755@qq.com>
+Date: Wed, 21 Oct 2026 18:43:17 +0800
+Subject: [PATCH] [mpi] install only librockit.so
+
+Keep the extra prebuilt libraries out of the rootfs so packaging does not strip and break libgraphic_lsf.so.
+---
+ mpi/CMakeLists.txt | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/mpi/CMakeLists.txt b/mpi/CMakeLists.txt
+index 9fe1ce2..205e18c 100644
+--- a/mpi/CMakeLists.txt
++++ b/mpi/CMakeLists.txt
+@@ -7,8 +7,6 @@ set(ROCKIT_DEP_COMMON_LIBS
+ )
+ set(ROCKIT_FILE_LIBS
+     ${ROCKIT_DEP_COMMON_LIBS}
+-    ${CMAKE_CURRENT_LIST_DIR}/sdk/lib64/libgraphic_lsf.so
+-    ${CMAKE_CURRENT_LIST_DIR}/sdk/lib64/librkgfx_avs.so
+ )
+ set(ROCKIT_DUMPSYS_FILE ${CMAKE_CURRENT_LIST_DIR}/example/bin/bin64/dumpsys)
+ else()
+@@ -17,7 +15,6 @@ set(ROCKIT_DEP_COMMON_LIBS
+ )
+ set(ROCKIT_FILE_LIBS
+     ${ROCKIT_DEP_COMMON_LIBS}
+-    ${CMAKE_CURRENT_LIST_DIR}/sdk/lib/libgraphic_lsf.so
+ )
+ set(ROCKIT_DUMPSYS_FILE ${CMAKE_CURRENT_LIST_DIR}/example/bin/bin32/dumpsys)
+ endif()
+-- 
+2.25.1
+
