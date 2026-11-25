@@ -15,9 +15,9 @@
 
 ```text
 VERSION
-kernel/patches/                 # 内核补丁
-device/patches/                 # device/rockchip 补丁（BR2_EXTERNAL 等）
-buildroot/patches/              # rockchip_rk3566_defconfig 补丁
+patches/kernel/                 # 内核补丁
+patches/device/                 # device/rockchip 补丁（BR2_EXTERNAL 等）
+patches/buildroot/              # rockchip_rk3566_defconfig 补丁
 buildroot/external/             # BR2_EXTERNAL
   external.desc / Config.in / external.mk
   package/tspi_action_source/   # 相机应用 Buildroot 包（拉 Gitee 编译）
@@ -43,9 +43,9 @@ SDK_DIR=/home/lzp/linux_sdk ./scripts/apply.sh
 
 | 仓库 | 补丁目录 |
 |------|----------|
-| `kernel` | `kernel/patches/` |
-| `device/rockchip` | `device/patches/` |
-| `buildroot` | `buildroot/patches/` |
+| `kernel` | `patches/kernel/` |
+| `device/rockchip` | `patches/device/` |
+| `buildroot` | `patches/buildroot/` |
 
 `buildroot/external` 不用打补丁；由 BoardConfig / `mk-buildroot.sh` 设置  
 `BR2_EXTERNAL=$TOP_DIR/tspi_action_bsp/buildroot/external`。
@@ -129,15 +129,15 @@ cd /home/lzp/linux_sdk
 ```bash
 # 内核
 cd /home/lzp/linux_sdk/kernel
-git format-patch <kernel_base> -o /home/lzp/linux_sdk/tspi_action_bsp/kernel/patches
+git format-patch <kernel_base> -o /home/lzp/linux_sdk/tspi_action_bsp/patches/kernel
 
 # device（tag tspi-v1.0 之后的本地提交）
 cd /home/lzp/linux_sdk/device/rockchip
-git format-patch tspi-v1.0..HEAD -o /home/lzp/linux_sdk/tspi_action_bsp/device/patches
+git format-patch tspi-v1.0..HEAD -o /home/lzp/linux_sdk/tspi_action_bsp/patches/device
 
 # buildroot defconfig
 cd /home/lzp/linux_sdk/buildroot
-git format-patch -1 <commit> -o /home/lzp/linux_sdk/tspi_action_bsp/buildroot/patches
+git format-patch -1 <commit> -o /home/lzp/linux_sdk/tspi_action_bsp/patches/buildroot
 ```
 
 fs-overlay、启动脚本等直接改 `buildroot/external/board/tspi/fs-overlay/`，无需打进 buildroot 仓库。
