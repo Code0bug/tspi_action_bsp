@@ -15,14 +15,22 @@
 
 ```text
 VERSION
-patches/kernel/                 # 内核补丁
-patches/device/                 # device/rockchip 补丁（BR2_EXTERNAL 等）
-patches/buildroot/              # rockchip_rk3566_defconfig 补丁
-buildroot/external/             # BR2_EXTERNAL
+doc/                                # 启动耗时记录
+patches/kernel/                     # 内核补丁
+patches/device/                     # device/rockchip 补丁（BR2_EXTERNAL 等）
+patches/buildroot/                  # rockchip_rk3566_defconfig 补丁
+buildroot/external/                 # BR2_EXTERNAL
   external.desc / Config.in / external.mk
-  package/tspi_action_source/   # 相机应用 Buildroot 包（拉 Gitee 编译）
-  board/tspi/fs-overlay/        # 根文件系统覆盖（叠在原厂 overlay 之上）
-scripts/apply.sh                # 向干净 SDK 重放补丁
+  package/tspi_action_source/       # 相机应用包：拉 Gitee 源码，用 CMake 交叉编译
+    tspi_action_source.mk           # 版本与依赖；编译安装走 cmake-package
+    Config.in
+  board/tspi/fs-overlay/            # 根文件系统覆盖（叠在原厂 overlay 之上）
+    etc/init.d/S22dbus              # system D-Bus，排在相机应用前面
+    etc/init.d/S22rkaiq_3A          # 3A 服务
+    etc/init.d/S23tspiAction        # 启动 /usr/bin/media-service 与 camera-ui
+    etc/tspiAction_debug            # 计时启动开关；skip= 里跳过 S30dbus 等
+    etc/tspi/boot_timing.sh
+scripts/apply.sh                    # 向干净 SDK 重放补丁
 ```
 
 ## 应用到干净 SDK
@@ -56,7 +64,7 @@ SDK_DIR=/home/lzp/linux_sdk ./scripts/apply.sh
 ## 编译
 
 应用已做成 BR2_EXTERNAL 包 `tspi_action_source`（`BR2_PACKAGE_TSPI_ACTION_SOURCE`）。  
-编 rootfs 时由 Buildroot 按依赖先编 Qt/OpenCV 等，再拉 Gitee 编译 `ai-cam-ui-widget`，安装到 `/root/ai-cam-ui-widget`。
+编 rootfs 时由 Buildroot 按依赖先编 Qt/OpenCV 等，再拉 Gitee 用 CMake 编译。装到目标系统的是 `/usr/bin/camera-ui`、`/usr/bin/media-service`、`/usr/lib/libmedia_hal.so`、`/usr/lib/qt/plugins/platforms/libqtspi.so`，以及 `/etc/dbus-1/system.d/com.tspi.MediaService.conf`。
 
 ```bash
 cd /home/lzp/linux_sdk
@@ -108,7 +116,7 @@ cd /home/lzp/linux_sdk
 make -C buildroot/output/rockchip_rk3566 tspi_action_source-rebuild
 ```
 
-二进制装到 `buildroot/output/rockchip_rk3566/target/root/ai-cam-ui-widget`。  
+产物装到 `buildroot/output/rockchip_rk3566/target/` 下的 `usr/bin/camera-ui`、`usr/bin/media-service`、`usr/lib/libmedia_hal.so`、`usr/lib/qt/plugins/platforms/libqtspi.so` 和 `etc/dbus-1/system.d/com.tspi.MediaService.conf`。  
 若还要刷新可烧录镜像，再执行 `./build.sh rootfs`（或至少让 Buildroot 重新打 `rootfs.ext4`）。
 
 ### 清除全部旧构建，完整重编

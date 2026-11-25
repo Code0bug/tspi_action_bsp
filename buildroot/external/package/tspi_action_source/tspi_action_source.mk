@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TSPI_ACTION_SOURCE_VERSION = 0c5a557dc00bf3e3e6b5c7e96421590a810a0692
+TSPI_ACTION_SOURCE_VERSION = 8e31ee092e72ff2e999435b5630167a89cf2e03b
 TSPI_ACTION_SOURCE_SITE = git@gitee.com:lzp1733149755/tspi_action_source.git
 TSPI_ACTION_SOURCE_SITE_METHOD = git
 TSPI_ACTION_SOURCE_LICENSE = Proprietary
@@ -13,19 +13,20 @@ TSPI_ACTION_SOURCE_DEPENDENCIES = \
 	qt5base \
 	opencv4 \
 	ffmpeg \
-	rockchip-rga
+	rockchip-rga \
+	rockchip-mpp \
+	libdrm \
+	alsa-lib \
+	dbus
 
-define TSPI_ACTION_SOURCE_CONFIGURE_CMDS
-	cd $(@D); $(TARGET_MAKE_ENV) $(HOST_DIR)/bin/qmake ai-cam-ui-widget.pro
-endef
+# Upstream is a CMake project. Buildroot's toolchain file already
+# cross-compiles for this output; do not pass cmake/toolchains/rk3566-buildroot.cmake.
+# Install layout follows the project: /usr/bin/camera-ui, /usr/bin/media-service,
+# /usr/lib/libmedia_hal.so, /usr/lib/qt/plugins/platforms/libqtspi.so,
+# /etc/dbus-1/system.d/com.tspi.MediaService.conf.
+TSPI_ACTION_SOURCE_SUPPORTS_IN_SOURCE_BUILD = NO
+TSPI_ACTION_SOURCE_CONF_OPTS = \
+	-DCMAKE_INSTALL_LIBDIR=lib \
+	-DCMAKE_INSTALL_SYSCONFDIR=/etc
 
-define TSPI_ACTION_SOURCE_BUILD_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D)
-endef
-
-define TSPI_ACTION_SOURCE_INSTALL_TARGET_CMDS
-	$(INSTALL) -D -m 0755 $(@D)/ai-cam-ui-widget \
-		$(TARGET_DIR)/root/ai-cam-ui-widget
-endef
-
-$(eval $(generic-package))
+$(eval $(cmake-package))
