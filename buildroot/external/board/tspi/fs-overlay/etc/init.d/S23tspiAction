@@ -2,31 +2,14 @@
 
 case "$1" in
     start)
+        . /etc/tspi/tspiAction.sh
         echo "Waiting for rkaiq_3A_server..."
-        i=0
-        while ! pidof rkaiq_3A_server >/dev/null 2>&1; do
-            i=$((i + 1))
-            if [ "$i" -ge 50 ]; then
-                echo "rkaiq_3A_server not running, media-service not started"
-                exit 1
-            fi
-            sleep 0.1
-        done
-        sleep 0.1
+        tspi_action_wait_rkaiq || exit 1
         echo "Starting media-service..."
-        mkdir -p /var/run/tspi-action
+        tspi_action_prepare_dirs
         nohup /usr/bin/media-service >/var/run/tspi-action/media-service.log 2>&1 &
-        i=0
-        while [ ! -S /run/tspi-action/preview.sock ]; do
-            i=$((i + 1))
-            if [ "$i" -ge 100 ]; then
-                echo "preview.sock not ready, camera-ui not started"
-                exit 1
-            fi
-            sleep 0.1
-        done
+        tspi_action_wait_preview_sock || exit 1
         echo "Starting camera-ui..."
-        export QT_QPA_PLATFORM=tspi
         nohup /usr/bin/camera-ui >/var/run/tspi-action/camera-ui.log 2>&1 &
         ;;
     stop)
