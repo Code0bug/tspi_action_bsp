@@ -17,7 +17,7 @@
 VERSION
 doc/                                # 启动耗时记录
 patches/kernel/                     # 内核补丁
-patches/device/                     # device/rockchip 补丁（BR2_EXTERNAL 等）
+patches/device/rockchip/           # device/rockchip 补丁（BR2_EXTERNAL 等）
 patches/buildroot/                  # rockchip_rk3566_defconfig 补丁
 buildroot/external/                 # BR2_EXTERNAL
   external.desc / Config.in / external.mk
@@ -52,7 +52,7 @@ SDK_DIR=/home/lzp/linux_sdk ./scripts/apply.sh
 | 仓库 | 补丁目录 |
 |------|----------|
 | `kernel` | `patches/kernel/` |
-| `device/rockchip` | `patches/device/` |
+| `device/rockchip` | `patches/device/rockchip/` |
 | `buildroot` | `patches/buildroot/` |
 
 `buildroot/external` 不用打补丁；由 BoardConfig / `mk-buildroot.sh` 设置  
@@ -141,7 +141,7 @@ git format-patch <kernel_base> -o /home/lzp/linux_sdk/tspi_action_bsp/patches/ke
 
 # device（tag tspi-v1.0 之后的本地提交）
 cd /home/lzp/linux_sdk/device/rockchip
-git format-patch tspi-v1.0..HEAD -o /home/lzp/linux_sdk/tspi_action_bsp/patches/device
+git format-patch tspi-v1.0..HEAD -o /home/lzp/linux_sdk/tspi_action_bsp/patches/device/rockchip
 
 # buildroot defconfig
 cd /home/lzp/linux_sdk/buildroot
