@@ -1,6 +1,7 @@
 kernel_base=37f70a925306aa41b4036e79715792292c3e6ab0
 kernel_tag=tspi-v1.0
 kernel_branch=develop
+kernel_version=4.19.232
 buildroot_base=4c7c9df616fb260dfb2dac29c176f1c31c8840e6
 buildroot_tag=tspi-v1.0
 buildroot_branch=develop

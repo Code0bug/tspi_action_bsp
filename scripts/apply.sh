@@ -42,8 +42,7 @@ version_get() {
 kernel_base=$(version_get kernel_base)
 device_base=$(version_get device_base)
 buildroot_base=$(version_get buildroot_base)
-
-EXPECTED_KERNEL_VER=4.19.232
+kernel_version=$(version_get kernel_version)
 
 read_kernel_version() {
 	local makefile="$SDK_DIR/kernel/Makefile"
@@ -113,11 +112,11 @@ remind_baselines() {
 	print_repo_baseline "buildroot" "$buildroot_head" "$buildroot_base_full" "buildroot_base=$buildroot_base"
 	echo
 	echo "请先检查:"
-	echo "  1. 当前内核版本是不是 ${EXPECTED_KERNEL_VER}（Makefile 读到: $ver）"
+	echo "  1. 当前内核版本是不是 ${kernel_version}（Makefile 读到: $ver）"
 	echo "  2. kernel、device/rockchip、buildroot 是不是都位于 VERSION 的基线"
 	echo
-	if [ "$ver" != "$EXPECTED_KERNEL_VER" ]; then
-		echo "注意: Makefile 版本是 $ver，不是 ${EXPECTED_KERNEL_VER}。"
+	if [ "$ver" != "$kernel_version" ]; then
+		echo "注意: Makefile 版本是 $ver，不是 ${kernel_version}。"
 		echo
 	fi
 	echo "输入 YES 后才会 reset 并开始 apply；其他输入将退出。"
