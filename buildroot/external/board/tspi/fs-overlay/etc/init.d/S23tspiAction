@@ -2,16 +2,19 @@
 
 case "$1" in
     start)
-        echo "Starting ai-cam-ui-widget..."
-        export QT_QPA_PLATFORM=eglfs
-        export QT_QPA_EGLFS_INTEGRATION=eglfs_kms
-        export QT_QPA_EGLFS_ROTATION=90
-        export QT_QPA_GENERIC_PLUGINS=evdevtouch:/dev/input/event4:rotate=90
-        /root/ai-cam-ui-widget &
+        . /etc/tspi/tspiAction.sh
+        echo "Waiting for rkaiq_3A_server..."
+        tspi_action_wait_rkaiq || exit 1
+        echo "Starting media-service..."
+        tspi_action_prepare_dirs
+        nohup /usr/bin/media-service >/var/run/tspi-action/media-service.log 2>&1 &
+        tspi_action_wait_preview_sock || exit 1
+        echo "Starting camera-ui..."
+        nohup /usr/bin/camera-ui >/var/run/tspi-action/camera-ui.log 2>&1 &
         ;;
     stop)
-        echo "Stopping ai-cam-ui-widget..."
-        killall ai-cam-ui-widget
+        echo "Stopping camera-ui and media-service..."
+        killall camera-ui media-service
         ;;
     restart)
         $0 stop

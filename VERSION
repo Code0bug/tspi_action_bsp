@@ -1,12 +1,12 @@
 kernel_base=37f70a925306aa41b4036e79715792292c3e6ab0
 kernel_tag=tspi-v1.0
 kernel_branch=develop
+kernel_version=4.19.232
 buildroot_base=4c7c9df616fb260dfb2dac29c176f1c31c8840e6
 buildroot_tag=tspi-v1.0
 buildroot_branch=develop
 device_base=b0834021126fd96e37f6031e86ffc0508b9ac099
 device_tag=tspi-v1.0
-rockit_base=ff2b65bd42141a14539b13d3dbee1b625f9d9de2
 app_repo=git@gitee.com:lzp1733149755/tspi_action_source.git
 app_branch=master
 sdk_note="泰山派 RK3566 Linux SDK，本机路径 /home/lzp/linux_sdk"
